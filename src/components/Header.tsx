@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import { 
   Wallet, 
   Menu, 
@@ -9,9 +10,12 @@ import {
   Globe, 
   Users,
   Bell,
-  Settings
+  Settings,
+  Sun,
+  Moon
 } from "lucide-react";
 import { useWeb3 } from "@/contexts/Web3Context";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useToast } from "@/hooks/use-toast";
 
 interface HeaderProps {
@@ -22,6 +26,7 @@ interface HeaderProps {
 const Header = ({ currentProfile, onCreateProfile }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { account, isConnected, connectWallet, disconnectWallet } = useWeb3();
+  const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
 
   const handleWalletAction = async () => {
@@ -77,6 +82,17 @@ const Header = ({ currentProfile, onCreateProfile }: HeaderProps) => {
 
         {/* Right Side Actions */}
         <div className="flex items-center space-x-4">
+          {/* Theme Toggle */}
+          <div className="flex items-center space-x-2">
+            <Sun className={`w-4 h-4 ${theme === 'light' ? 'text-yellow-500' : 'text-muted-foreground'}`} />
+            <Switch
+              checked={theme === 'dark'}
+              onCheckedChange={toggleTheme}
+              className="data-[state=checked]:bg-primary"
+            />
+            <Moon className={`w-4 h-4 ${theme === 'dark' ? 'text-blue-400' : 'text-muted-foreground'}`} />
+          </div>
+
           {/* Network Status */}
           {isConnected && (
             <Badge variant="outline" className="hidden sm:flex border-green-500/30 text-green-400">
@@ -148,6 +164,20 @@ const Header = ({ currentProfile, onCreateProfile }: HeaderProps) => {
                 Create Profile
               </Button>
             )}
+            
+            {/* Mobile Theme Toggle */}
+            <div className="flex items-center justify-between py-2 border-t border-primary/20 mt-4 pt-4">
+              <span className="text-sm text-muted-foreground">Theme</span>
+              <div className="flex items-center space-x-2">
+                <Sun className={`w-4 h-4 ${theme === 'light' ? 'text-yellow-500' : 'text-muted-foreground'}`} />
+                <Switch
+                  checked={theme === 'dark'}
+                  onCheckedChange={toggleTheme}
+                  className="data-[state=checked]:bg-primary"
+                />
+                <Moon className={`w-4 h-4 ${theme === 'dark' ? 'text-blue-400' : 'text-muted-foreground'}`} />
+              </div>
+            </div>
           </nav>
         </div>
       )}
