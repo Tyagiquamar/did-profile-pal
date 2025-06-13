@@ -26,7 +26,7 @@ interface Web3ProviderProps {
   children: ReactNode;
 }
 
-export const Web3Provider = ({ children }: Web3ProviderProps) => {
+export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
   const [account, setAccount] = useState<string | null>(null);
   const [provider, setProvider] = useState<BrowserProvider | null>(null);
   const [signer, setSigner] = useState<JsonRpcSigner | null>(null);
